@@ -106,7 +106,7 @@ export default function TransactionForm({ onSubmit, loading }) {
             type="text"
             required
             className="input-field"
-            placeholder="e.g. Uber to work..."
+            placeholder="e.g. Pathao ride..."
             value={form.description}
             onChange={handleChange}
           />

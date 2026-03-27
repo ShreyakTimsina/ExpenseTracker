@@ -5,50 +5,58 @@ const classifier = new natural.BayesClassifier();
 // Train Income Categories
 classifier.addDocument('my salary for march', 'Income:Salary');
 classifier.addDocument('paycheck from work', 'Income:Salary');
-classifier.addDocument('monthly wage', 'Income:Salary');
-classifier.addDocument('company bonus', 'Income:Bonus');
-classifier.addDocument('holiday dividend', 'Income:Bonus');
-classifier.addDocument('freelance web project', 'Income:Sales');
+classifier.addDocument('fonepay salary monthly', 'Income:Salary');
+classifier.addDocument('company bonus dashain', 'Income:Bonus');
+classifier.addDocument('holiday tihar bonus', 'Income:Bonus');
+classifier.addDocument('freelance web project invoice', 'Income:Sales');
 classifier.addDocument('client payment for invoice', 'Income:Sales');
-classifier.addDocument('sold old laptop', 'Income:Sales');
-classifier.addDocument('apple stock sale', 'Income:Investment');
-classifier.addDocument('crypto bitcoin eth', 'Income:Investment');
+classifier.addDocument('sold old laptop in hamrobazaar', 'Income:Sales');
+classifier.addDocument('esewa money receive', 'Income:Sales');
+classifier.addDocument('khalti receive payment', 'Income:Sales');
+classifier.addDocument('nabil bank investment dividend', 'Income:Investment');
+classifier.addDocument('nepsepse share mutual fund', 'Income:Investment');
 
 // Train Expense Categories
-classifier.addDocument('uber ride to the office', 'Expense:Transport');
-classifier.addDocument('taxi fare', 'Expense:Transport');
-classifier.addDocument('gas station fuel', 'Expense:Transport');
-classifier.addDocument('subway train tickets', 'Expense:Transport');
-classifier.addDocument('bus transit', 'Expense:Transport');
-classifier.addDocument('flight tickets to new york', 'Expense:Travel');
-classifier.addDocument('airbnb hotel booking', 'Expense:Travel');
+classifier.addDocument('pathao ride to the office', 'Expense:Transport');
+classifier.addDocument('indrive fare home', 'Expense:Transport');
+classifier.addDocument('yango trip', 'Expense:Transport');
+classifier.addDocument('taxi microbus bus fare', 'Expense:Transport');
+classifier.addDocument('safa tempo toll', 'Expense:Transport');
+classifier.addDocument('tootle bike ride', 'Expense:Transport');
+classifier.addDocument('gas station petrol pump fuel', 'Expense:Transport');
+classifier.addDocument('buddha air flight tickets to pokhara', 'Expense:Travel');
+classifier.addDocument('yeti airlines flight', 'Expense:Travel');
+classifier.addDocument('airbnb hotel booking thamel', 'Expense:Travel');
 
-classifier.addDocument('mcdonalds lunch', 'Expense:Food');
-classifier.addDocument('dinner at restaurant', 'Expense:Food');
-classifier.addDocument('coffee starbucks', 'Expense:Food');
-classifier.addDocument('groceries from supermarket', 'Expense:Food');
-classifier.addDocument('pizza delivery', 'Expense:Food');
+classifier.addDocument('mcdonalds kfc lunch', 'Expense:Food');
+classifier.addDocument('momo choumein at boudha', 'Expense:Food');
+classifier.addDocument('dal bhat thakali set', 'Expense:Food');
+classifier.addDocument('chiya samosa breakfast', 'Expense:Food');
+classifier.addDocument('baje ko sekuwa dinner', 'Expense:Food');
+classifier.addDocument('foodmandu bhojdeals delivery', 'Expense:Food');
+classifier.addDocument('bhatbhateni supermarket groceries', 'Expense:Food');
+classifier.addDocument('big mart groceries veggies', 'Expense:Food');
+classifier.addDocument('kirana pasal shopping', 'Expense:Food');
 
-classifier.addDocument('electric bill', 'Expense:Utilities');
-classifier.addDocument('water and heating', 'Expense:Utilities');
-classifier.addDocument('internet wifi the utility company', 'Expense:Utilities');
-classifier.addDocument('phone monthly plan', 'Expense:Utilities');
+classifier.addDocument('nea electricity bill', 'Expense:Utilities');
+classifier.addDocument('khanepani water tanker', 'Expense:Utilities');
+classifier.addDocument('ntc ncell recharge card', 'Expense:Utilities');
+classifier.addDocument('ncell data pack', 'Expense:Utilities');
+classifier.addDocument('worldlink vianet internet subscription', 'Expense:Utilities');
+classifier.addDocument('esewa khalti utility payment', 'Expense:Utilities');
 
-classifier.addDocument('movie theater tickets', 'Expense:Entertainment');
-classifier.addDocument('video game steam', 'Expense:Entertainment');
-classifier.addDocument('concert festival', 'Expense:Entertainment');
+classifier.addDocument('movie theater qfx tickets', 'Expense:Entertainment');
+classifier.addDocument('video game steam pubg', 'Expense:Entertainment');
+classifier.addDocument('concert festival lod', 'Expense:Entertainment');
 classifier.addDocument('netflix subscription', 'Expense:Entertainment');
-classifier.addDocument('spotify music', 'Expense:Entertainment');
 
-classifier.addDocument('doctor appointment clinic', 'Expense:Health');
-classifier.addDocument('pharmacy medicine drugs', 'Expense:Health');
-classifier.addDocument('gym membership Planet Fitness', 'Expense:Health');
-classifier.addDocument('hospital bills', 'Expense:Health');
+classifier.addDocument('doctor appointment norvic mediciti', 'Expense:Health');
+classifier.addDocument('pharmacy medicine drugs aushadi', 'Expense:Health');
+classifier.addDocument('gym membership fitness center', 'Expense:Health');
 
+classifier.addDocument('daraz online shopping office supplies', 'Expense:Office');
 classifier.addDocument('office desk chair', 'Expense:Office');
-classifier.addDocument('printer paper ink', 'Expense:Office');
-classifier.addDocument('software aws hosting', 'Expense:Office');
-classifier.addDocument('adobe creative cloud subscription', 'Expense:Office');
+classifier.addDocument('printer paper ink stationery', 'Expense:Office');
 
 // Train it
 classifier.train();

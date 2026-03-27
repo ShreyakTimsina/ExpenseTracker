@@ -39,9 +39,10 @@ export default function CategoryChart({ data, title = "Expenses by Category" }) 
               cx="50%"
               cy="50%"
               innerRadius={60}
-              outerRadius={90}
+              outerRadius={80}
               paddingAngle={5}
               dataKey="value"
+              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
               stroke="none"
             >
               {chartData.map((entry, index) => (
