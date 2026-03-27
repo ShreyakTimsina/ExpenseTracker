@@ -1,28 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const EXPENSE_CATEGORIES = ['Food', 'Transport', 'Utilities', 'Entertainment', 'Health', 'Travel', 'Office', 'Other'];
 const INCOME_CATEGORIES = ['Salary', 'Bonus', 'Sales', 'Investment', 'Other'];
-
-const predictCategoryInfo = (desc) => {
-  const d = desc.toLowerCase();
-  
-  // Income 
-  if (d.includes('salary') || d.includes('paycheck') || d.includes('wage')) return { type: 'Income', category: 'Salary' };
-  if (d.includes('bonus') || d.includes('dividend')) return { type: 'Income', category: 'Bonus' };
-  if (d.includes('freelance') || d.includes('client') || d.includes('sales') || d.includes('invoice')) return { type: 'Income', category: 'Sales' };
-  if (d.includes('stock') || d.includes('investment') || d.includes('crypto')) return { type: 'Income', category: 'Investment' };
-  
-  // Expenses
-  if (d.includes('uber') || d.includes('taxi') || d.includes('gas') || d.includes('train') || d.includes('bus') || d.includes('transit') || d.includes('lyft') || d.includes('flight')) return { type: 'Expense', category: 'Transport' };
-  if (d.includes('lunch') || d.includes('dinner') || d.includes('food') || d.includes('restaurant') || d.includes('grocery') || d.includes('coffee') || d.includes('mcdonald') || d.includes('pizza')) return { type: 'Expense', category: 'Food' };
-  if (d.includes('electric') || d.includes('water') || d.includes('internet') || d.includes('bill') || d.includes('phone') || d.includes('wifi')) return { type: 'Expense', category: 'Utilities' };
-  if (d.includes('movie') || d.includes('game') || d.includes('concert') || d.includes('netflix') || d.includes('spotify') || d.includes('party')) return { type: 'Expense', category: 'Entertainment' };
-  if (d.includes('doctor') || d.includes('pharmacy') || d.includes('medicine') || d.includes('gym') || d.includes('hospital')) return { type: 'Expense', category: 'Health' };
-  if (d.includes('hotel') || d.includes('airbnb') || d.includes('vacation')) return { type: 'Expense', category: 'Travel' };
-  if (d.includes('desk') || d.includes('paper') || d.includes('office') || d.includes('software') || d.includes('subscription')) return { type: 'Expense', category: 'Office' };
-  
-  return null;
-};
 
 export default function TransactionForm({ onSubmit, loading }) {
   const [type, setType] = useState('Expense');
@@ -41,23 +21,36 @@ export default function TransactionForm({ onSubmit, loading }) {
     }));
   };
 
+  // Debounced API call to our NLP model
+  useEffect(() => {
+    const desc = form.description;
+    if (desc.length < 3) return;
+
+    const timer = setTimeout(async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL || '/api'}/transactions/predict-category?desc=${encodeURIComponent(desc)}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const prediction = res.data;
+        if (prediction && prediction.type && prediction.category) {
+          if (prediction.type !== type) {
+            setType(prediction.type);
+          }
+          setForm((prev) => ({ ...prev, category: prediction.category }));
+        }
+      } catch (err) {
+        console.error('Failed to predict category:', err);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [form.description]); // Re-run effect whenever description changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    let updates = { [name]: value };
-    
-    // Auto-predict category & type based on description
-    if (name === 'description' && value.length > 2) {
-      const prediction = predictCategoryInfo(value);
-      if (prediction) {
-        if (prediction.type !== type) {
-          setType(prediction.type);
-        }
-        updates.category = prediction.category;
-      }
-    }
-    
-    setForm(prev => ({ ...prev, ...updates }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {

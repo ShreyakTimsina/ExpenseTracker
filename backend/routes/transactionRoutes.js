@@ -2,6 +2,7 @@ const express = require('express');
 const Transaction = require('../models/Transaction');
 const { protect } = require('../middleware/authMiddleware');
 const { detectAnomaly } = require('../utils/anomalyDetection');
+const { predictTransactionInfo } = require('../utils/mlCategorizer');
 
 const router = express.Router();
 
@@ -14,6 +15,17 @@ router.get('/', async (req, res) => {
     const transactions = await Transaction.find({ userId: req.user.id })
       .sort({ date: -1 });
     res.json(transactions);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// GET /api/transactions/predict-category - NLP text prediction
+router.get('/predict-category', (req, res) => {
+  try {
+    const { desc } = req.query;
+    const prediction = predictTransactionInfo(desc);
+    res.json(prediction);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
