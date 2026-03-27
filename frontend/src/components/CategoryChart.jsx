@@ -11,6 +11,22 @@ const COLORS = [
   '#84cc16', // lime-500
 ];
 
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  // Only show label if the slice is large enough (e.g. > 5%) to avoid clutter
+  if (percent < 0.05) return null;
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize="13" fontWeight="bold">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
 export default function CategoryChart({ data, title = "Expenses by Category" }) {
   const chartData = Object.entries(data).map(([name, value]) => ({
     name,
@@ -38,12 +54,12 @@ export default function CategoryChart({ data, title = "Expenses by Category" }) 
               data={chartData}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              paddingAngle={5}
+              outerRadius={100}
               dataKey="value"
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              stroke="none"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              stroke="rgba(255,255,255,0.1)"
+              strokeWidth={2}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
