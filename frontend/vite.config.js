@@ -9,13 +9,12 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      proxy: {
-        '/api': {
-          // Use the environment variable if available, otherwise fallback
-          target: env.VITE_API_URL || 'http://localhost:5001',
-          changeOrigin: true,
-        }
+    proxy: {
+      '/api': {
+        target:  env.VITE_API_URL || 'https://expense-tracker-backend-y17e.onrender.com',
+        changeOrigin: true,
       }
     }
+  }
   }
 })
