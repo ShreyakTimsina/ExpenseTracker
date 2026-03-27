@@ -155,16 +155,27 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Two-column layout */}
+            {/* Two-column layout with 3 elements */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
               {/* Add Transaction Form */}
               <div className="lg:col-span-1">
                 <TransactionForm onSubmit={handleAddTransaction} loading={submitting} />
               </div>
 
-              {/* Category Breakdown Chart */}
-              <div className="lg:col-span-2">
-                {stats?.byCategory && <CategoryChart data={stats.byCategory} />}
+              {/* Category Breakdown Charts */}
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {stats?.expenseByCategory && (
+                  <CategoryChart 
+                    data={stats.expenseByCategory} 
+                    title="Expenses by Category" 
+                  />
+                )}
+                {stats?.incomeByCategory && Object.keys(stats.incomeByCategory).length > 0 && (
+                  <CategoryChart 
+                    data={stats.incomeByCategory} 
+                    title="Income by Source" 
+                  />
+                )}
               </div>
             </div>
 

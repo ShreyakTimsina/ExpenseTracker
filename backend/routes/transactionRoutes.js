@@ -90,17 +90,27 @@ router.get('/stats', async (req, res) => {
 
     const anomalyCount = transactions.filter((t) => t.isAnomaly).length;
 
-    const byCategory = transactions.reduce((acc, t) => {
-      acc[t.category] = (acc[t.category] || 0) + Math.abs(t.amount);
-      return acc;
-    }, {});
+    const incomeByCategory = transactions
+      .filter((t) => t.amount > 0)
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+      }, {});
+
+    const expenseByCategory = transactions
+      .filter((t) => t.amount < 0)
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + Math.abs(t.amount);
+        return acc;
+      }, {});
 
     res.json({
       totalExpenses,
       totalIncome,
       balance: totalIncome - totalExpenses,
       anomalyCount,
-      byCategory,
+      incomeByCategory,
+      expenseByCategory,
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });

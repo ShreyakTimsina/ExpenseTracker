@@ -11,7 +11,7 @@ const COLORS = [
   '#84cc16', // lime-500
 ];
 
-export default function CategoryChart({ data }) {
+export default function CategoryChart({ data, title = "Expenses by Category" }) {
   const chartData = Object.entries(data).map(([name, value]) => ({
     name,
     value,
@@ -30,7 +30,7 @@ export default function CategoryChart({ data }) {
 
   return (
     <div className="card h-full min-h-[350px] flex flex-col">
-      <h2 className="text-lg font-semibold text-white mb-4">Expenses by Category</h2>
+      <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
       <div className="flex-1 w-full min-h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
