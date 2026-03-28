@@ -45,15 +45,16 @@ export default function CategoryChart({ data, title = "Expenses by Category", co
     return compact ? emptyState : <div className="card h-full">{emptyState}</div>;
   }
 
-    <div className={`flex flex-col w-full ${compact ? '' : 'h-full min-h-[350px]'}`}>
+  const chartContent = (
+    <div className={`flex flex-col w-full min-w-0 ${compact ? '' : 'h-full min-h-[350px]'}`}>
       {!compact && <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>}
-      <div className="w-full" style={{ height: compact ? 260 : 300 }}>
+      <div className="w-full min-w-0 flex items-center justify-center" style={{ height: compact ? 260 : 300 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+          <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <Pie
               data={chartData}
               cx="50%"
-              cy="45%"
+              cy="50%"
               outerRadius={compact ? 85 : 100}
               dataKey="value"
               labelLine={false}
@@ -70,7 +71,7 @@ export default function CategoryChart({ data, title = "Expenses by Category", co
               contentStyle={{ backgroundColor: '#1e1e38', borderColor: '#2d2d50', borderRadius: '0.75rem', color: '#fff' }}
               itemStyle={{ color: '#fff' }}
             />
-            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+            <Legend verticalAlign="bottom" align="center" height={36} iconType="circle" />
           </PieChart>
         </ResponsiveContainer>
       </div>
