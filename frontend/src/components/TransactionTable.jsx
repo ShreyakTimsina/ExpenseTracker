@@ -1,12 +1,44 @@
+import { useState } from 'react';
+
+const FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'income', label: 'Income' },
+  { key: 'expenses', label: 'Expenses' },
+];
+
 export default function TransactionTable({ transactions, onDelete }) {
+  const [filter, setFilter] = useState('all');
+
+  const filtered = transactions.filter((t) => {
+    if (filter === 'income') return t.amount > 0;
+    if (filter === 'expenses') return t.amount < 0;
+    return true;
+  });
+
   return (
     <div className="card overflow-hidden !p-0">
-      <div className="p-6 border-b border-dark-600 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-          <span className="text-xl">📋</span> Recent Transactions
+      {/* Header with filter tabs */}
+      <div className="p-4 border-b border-dark-600 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h2 className="text-base font-semibold text-white flex items-center gap-2">
+          <span className="text-xl">📋</span> Transaction Log
         </h2>
+        <div className="flex items-center gap-1 bg-dark-800 rounded-lg p-1">
+          {FILTERS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                filter === key
+                  ? 'bg-primary-600/30 text-primary-300 border border-primary-500/40'
+                  : 'text-gray-400 hover:text-gray-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm text-gray-400">
           <thead className="text-xs text-gray-400 uppercase bg-dark-800 border-b border-dark-600">
@@ -19,17 +51,17 @@ export default function TransactionTable({ transactions, onDelete }) {
             </tr>
           </thead>
           <tbody>
-            {transactions.length === 0 ? (
+            {filtered.length === 0 ? (
               <tr>
                 <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
                   <div className="flex flex-col items-center justify-center">
                     <span className="text-3xl mb-2">🍃</span>
-                    <p>No transactions found.</p>
+                    <p>No {filter === 'all' ? '' : filter + ' '}transactions found.</p>
                   </div>
                 </td>
               </tr>
             ) : (
-              transactions.map((t) => (
+              filtered.map((t) => (
                 <tr key={t._id} className="bg-dark-900 border-b border-dark-800 hover:bg-dark-800/50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {new Date(t.date).toLocaleDateString()}

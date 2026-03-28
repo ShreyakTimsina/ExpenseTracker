@@ -23,4 +23,10 @@ export const createTransaction = (data) => API.post('/transactions', data);
 export const deleteTransaction = (id) => API.delete(`/transactions/${id}`);
 export const getStats = () => API.get('/transactions/stats');
 
+// Reports
+export const getWeeklyReport = (date) =>
+  API.get('/transactions/report/weekly', date ? { params: { date } } : {});
+export const getMonthlyReport = (year, month) =>
+  API.get('/transactions/report/monthly', year ? { params: { year, month } } : {});
+
 export default API;
