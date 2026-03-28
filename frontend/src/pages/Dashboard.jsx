@@ -261,16 +261,11 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  {chartTab === 'expenses' && stats?.expenseByCategory && (
-                    <CategoryChart data={stats.expenseByCategory} title="" compact />
+                  {chartTab === 'expenses' && (
+                    <CategoryChart data={stats?.expenseByCategory || {}} title="" compact />
                   )}
-                  {chartTab === 'income' && stats?.incomeByCategory && Object.keys(stats.incomeByCategory).length > 0 && (
-                    <CategoryChart data={stats.incomeByCategory} title="" compact />
-                  )}
-                  {chartTab === 'income' && (!stats?.incomeByCategory || Object.keys(stats.incomeByCategory).length === 0) && (
-                    <div className="flex items-center justify-center h-40 text-gray-500 text-sm">
-                      No income data yet.
-                    </div>
+                  {chartTab === 'income' && (
+                    <CategoryChart data={stats?.incomeByCategory || {}} title="" compact />
                   )}
                 </div>
               </div>
