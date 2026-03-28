@@ -18,7 +18,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   // Only show label if the slice is large enough (e.g. > 5%) to avoid clutter
-  if (percent < 0.05) return null;
+  if (percent < 0.05) return <text />;
 
   return (
     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize="13" fontWeight="bold">
@@ -28,7 +28,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 export default function CategoryChart({ data, title = "Expenses by Category", compact = false }) {
-  const chartData = Object.entries(data).map(([name, value]) => ({
+  const chartData = Object.entries(data || {}).map(([name, value]) => ({
     name,
     value,
   }));
@@ -45,17 +45,16 @@ export default function CategoryChart({ data, title = "Expenses by Category", co
     return compact ? emptyState : <div className="card h-full">{emptyState}</div>;
   }
 
-  const chartContent = (
-    <div className={`flex flex-col h-full ${compact ? 'min-h-[250px]' : 'min-h-[350px]'}`}>
+    <div className={`flex flex-col w-full ${compact ? '' : 'h-full min-h-[350px]'}`}>
       {!compact && <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>}
-      <div className="flex-1 w-full min-h-[250px]">
+      <div className="w-full" style={{ height: compact ? 260 : 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={chartData}
               cx="50%"
-              cy="50%"
-              outerRadius={compact ? 80 : 100}
+              cy="45%"
+              outerRadius={compact ? 85 : 100}
               dataKey="value"
               labelLine={false}
               label={renderCustomizedLabel}
