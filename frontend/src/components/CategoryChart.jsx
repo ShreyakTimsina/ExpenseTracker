@@ -27,26 +27,27 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-export default function CategoryChart({ data, title = "Expenses by Category" }) {
+export default function CategoryChart({ data, title = "Expenses by Category", compact = false }) {
   const chartData = Object.entries(data).map(([name, value]) => ({
     name,
     value,
   }));
 
   if (chartData.length === 0) {
-    return (
-      <div className="card h-full flex flex-col items-center justify-center p-8">
+    const emptyState = (
+      <div className="flex flex-col items-center justify-center p-8 h-full">
         <div className="w-16 h-16 rounded-full bg-dark-700 flex items-center justify-center mb-4">
           <span className="text-2xl">📊</span>
         </div>
-        <p className="text-gray-400 text-center">No expense data available for chart</p>
+        <p className="text-gray-400 text-center">No data available for chart</p>
       </div>
     );
+    return compact ? emptyState : <div className="card h-full">{emptyState}</div>;
   }
 
-  return (
-    <div className="card h-full min-h-[350px] flex flex-col">
-      <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
+  const chartContent = (
+    <div className={`flex flex-col h-full ${compact ? 'min-h-[250px]' : 'min-h-[350px]'}`}>
+      {!compact && <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>}
       <div className="flex-1 w-full min-h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -54,7 +55,7 @@ export default function CategoryChart({ data, title = "Expenses by Category" }) 
               data={chartData}
               cx="50%"
               cy="50%"
-              outerRadius={100}
+              outerRadius={compact ? 80 : 100}
               dataKey="value"
               labelLine={false}
               label={renderCustomizedLabel}
@@ -76,4 +77,6 @@ export default function CategoryChart({ data, title = "Expenses by Category" }) 
       </div>
     </div>
   );
+
+  return compact ? chartContent : <div className="card h-full">{chartContent}</div>;
 }
